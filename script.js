@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Adicionar flashcard aos dados do card
                         cardData.flashcards.push({ question: questionValue, answer: answerValue });
                         addModal.remove();
-                        if(cardData.flashcards.length >= 2){
+                        if(cardData.flashcards.length >= 10){
                             startButton.disabled = false;
                         }
                     } else {
