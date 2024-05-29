@@ -2,14 +2,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const cardsPerPage = 12;
     let currentPage = 1;
 
-    const createButtons = document.querySelectorAll('.create-button');
+    const createButtons = document.querySelectorAll('.create-button'); 
     const contentBox = document.querySelector('.content-box');
     const cardContainer = document.createElement('div');
     cardContainer.classList.add('card-container');
 
     const cardsData = []; // Array para armazenar os dados dos cards
 
-    createButtons.forEach(function(createButton) {
+    //cria os botões (primeira tela)  
+    createButtons.forEach(function(createButton) { 
         createButton.addEventListener('click', function() {
             const modal = document.getElementById('modal');
             modal.style.display = 'block';
@@ -26,7 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const saveButton = document.querySelector('.save-button');
 
-    saveButton.addEventListener('click', function() {
+    //evento para click do botao de salvar (primera tela)
+    saveButton.addEventListener('click', function() { 
         const nomeInput = document.getElementById('nome');
         const tagInput = document.getElementById('tag');
         const nomeValue = nomeInput.value;
@@ -40,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const modal = document.getElementById('modal');
         modal.style.display = 'none';
 
+        //cria dinamicamente um novo cartão
         const newCard = document.createElement('div');
         newCard.classList.add('card');
         newCard.innerHTML = `
@@ -58,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Remover o card excluído dos dados
         const deleteButton = newCard.querySelector('.delete-button');
-        deleteButton.addEventListener('click', function() {
+        deleteButton.addEventListener('click', function() { //evento para click do botao de deletar(Primeira Tela)
             newCard.remove();
             // Remover o card excluído dos dados
             const index = cardsData.indexOf(cardData);
@@ -67,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        //evento para o click do botão editar (primeira tela)
         const editButton = newCard.querySelector('.edit-button');
         editButton.addEventListener('click', function() {
             const editModal = document.createElement('div');
@@ -79,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <form>
                         <div class="form-group">
                             <label for="edit-nome">Nome</label>
-                            <input type="text" id="edit-nome" name="edit-nome" placeholder="Digite o nome">
+                            <input type="text" id="edit-nome" name="edit-nome" placeholder="Digite o nome"> 
                         </div>
                         <div class="form-group">
                             <label for="edit-tag">Descrição</label>
@@ -94,6 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button class="save-edit-button">Salvar</button>
                 </div>
             `;
+
+            
 
             const nomeEditInput = editModal.querySelector('#edit-nome');
             const tagEditInput = editModal.querySelector('#edit-tag');
@@ -113,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 editModal.remove();
             });
 
+            //evento para click do botao de adicionar card
             const addFlashcardButton = editModal.querySelector('.add-flashcard');
             addFlashcardButton.addEventListener('click', function() {
                 const addModal = document.createElement('div');
@@ -136,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
 
+                //evente para click do botao de salvar card
                 const saveAddButton = addModal.querySelector('.save-add-button');
                 saveAddButton.addEventListener('click', function() {
                     const questionInput = addModal.querySelector('#add-question');
@@ -157,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
 
+                //exento para click do botao de fechar 
                 const closeButtonAddModal = addModal.querySelector('.close-button');
                 closeButtonAddModal.addEventListener('click', function() {
                     addModal.remove();
@@ -165,6 +174,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.appendChild(addModal);
             });
 
+
+            //evento para click do botao de salvar "Editar Card"
             const saveEditButton = editModal.querySelector('.save-edit-button');
             saveEditButton.addEventListener('click', function() {
                 const editedNomeValue = nomeEditInput.value;
@@ -193,12 +204,15 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.appendChild(editModal);
         });
 
+        //evento para click do botao Começar
         const startButton = newCard.querySelector('.start-button');
         startButton.addEventListener('click', function() {
             let currentFlashcardIndex = 0;
             let correctCount = 0;
             let incorrectCount = 0;
             let answeredFlashcards = new Set(); // Conjunto para armazenar os flashcards respondidos
+
+
 
             const startModal = document.createElement('div');
             startModal.classList.add('start-modal');
@@ -232,10 +246,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const flashcard = startModal.querySelector('#flashcard');
             const scoreDisplay = startModal.querySelector('#score-display');
 
+            //evento para click do botao de virar o card
             flipButton.addEventListener('click', () => {
                 flashcard.classList.toggle('flipped');
             });
 
+            //evento do click do botão de sortear
             const randomButton = startModal.querySelector('#random-button');
             randomButton.addEventListener('click', function() {
                 if (cardData.flashcards.length > 0) {
@@ -250,11 +266,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     flashcard.classList.remove('flipped');
                 } else {
-                    alert('No flashcards available to shuffle.');
+                    alert('Não existem flashcards disponíveis para sorteio.');  
                 }
             });
 
-            const arrowButton = startModal.querySelector('.arrow-button');
+          //evento do botao de passar para o próximo card
+          const arrowButton = startModal.querySelector('.arrow-button');
             arrowButton.addEventListener('click', function() {
                 if (currentFlashcardIndex < cardData.flashcards.length - 1) {
                     currentFlashcardIndex++;
@@ -269,21 +286,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 flashcard.classList.remove('flipped');
             });
 
+            //evento de click do botão de correto.
             const correctButton = startModal.querySelector('.correct-button');
-            correctButton.addEventListener('click', function() {
+            correctButton.addEventListener('click', function () {
+                if (answeredFlashcards.has(currentFlashcardIndex)) {
+                    alert('Este flashcard já foi respondido.');
+                    return; // Sai da função para não incrementar o contador
+                }
                 correctCount++;
                 updateScoreDisplay();
                 markFlashcardAsAnswered(currentFlashcardIndex);
                 moveToNextFlashcard();
+
+
             });
 
+            //evento de click do botão de errado
             const incorrectButton = startModal.querySelector('.incorrect-button');
-            incorrectButton.addEventListener('click', function() {
+            incorrectButton.addEventListener('click', function () {
+                if (answeredFlashcards.has(currentFlashcardIndex)) {
+                    alert('Este flashcard já foi respondido.'); 
+                    return; // Sai da função para não incrementar o contador
+                }
+
                 incorrectCount++;
                 updateScoreDisplay();
                 markFlashcardAsAnswered(currentFlashcardIndex);
                 moveToNextFlashcard();
             });
+
 
             function updateScoreDisplay() {
                 scoreDisplay.textContent = `Corretos: ${correctCount} | Errados: ${incorrectCount}`;
@@ -295,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             function moveToNextFlashcard() {
                 if (answeredFlashcards.size === cardData.flashcards.length) {
-                    alert('Você respondeu todos os flashcards!');
+                    alert(`Todos os flashcards foram respondidos!\nAcertos: ${correctCount}\nErros: ${incorrectCount}`);
                     startModal.remove();
                     return;
                 }
@@ -337,11 +368,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
+    //esconde o modal na página
     function closeModal() {
         const modal = document.getElementById('modal');
         modal.style.display = 'none';
     }
 
+    //cria o elemento flashcard
     function createFlashcardElement(question, answer) {
         const newFlashcard = document.createElement('div');
         newFlashcard.classList.add('flashcard');
@@ -350,6 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="answer">${answer}</span>
             <button class="delete-flashcard-button">X</button>
         `;
+        //evento para click do botao de deletar flashcard
         newFlashcard.querySelector('.delete-flashcard-button').addEventListener('click', function() {
             newFlashcard.remove();
             // Remover o flashcard excluído dos dados do card
@@ -383,6 +417,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+  
+    //controla a exibição dos cartões com base na página atual
     function renderPage(page) {
         const startIndex = (page - 1) * cardsPerPage;
         const endIndex = page * cardsPerPage;
