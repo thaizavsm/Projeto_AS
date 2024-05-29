@@ -226,7 +226,7 @@ input[type="text"] {
 .delete-flashcard-button {
     position: absolute;
     top: 50%; /* Posiciona o botão de delete na metade da altura do retângulo */
-    right: 10px; /* Posiciona o botão de delete na parte direita */
+    right: 20px; /* Posiciona o botão de delete na parte direita */
     transform: translateY(-50%); /* Ajusta o posicionamento vertical para o centro */
     background-color: transparent;
     color: #A9A9A9;
